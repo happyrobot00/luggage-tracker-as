@@ -1,7 +1,6 @@
 import { storage, Context } from "near-sdk-core"
 import { context } from "near-sdk-as"
 import { LuggageItem, luggageRecords } from "./model";
-import { PersistentVector } from "near-sdk-as";
 
 
 /**
@@ -38,7 +37,7 @@ export function getLuggageItem(id: string): LuggageItem | null {
 }
 
 /**
-*  Remove/delete a luggageItem record from the PersistentSet.
+*  Remove/delete a luggageItem record from the PersistentUnorderedMap.
 */
 export function removeLuggageItem(id: string): void {
   luggageRecords.delete(id);
@@ -60,7 +59,8 @@ export function luggageEnRoute(id: string): void {
 *  _id = id of the luggage item
 *  _collectionPoint = the name of the gate or carousel where the luggage can
 *                     be collected eg "Gate 4", or "Carousel B"
-*
+*  Since the "get" returns a nullable type, we need to cast <LuggageItem> when
+*  doing the get
 */
 export function readyForCollection(id: string, collectionPoint: string): void {
   let bag: LuggageItem = <LuggageItem>luggageRecords.get(id)
@@ -83,7 +83,7 @@ export function collectLuggage(id: string): void {
 
 
 /**
-*  Verify the .
+*  Verify the account/wallet owner matches the one who initially checked in.
 */
 export function verifyOwner(id: string): boolean {
   let result = false
