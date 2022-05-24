@@ -17,47 +17,23 @@ import { PersistentVector } from "near-sdk-as";
 */
 export function checkInLuggageItem(id: string, flightno: string, origin: string, destination: string): string {
   var message: string;
-  if(idExists(id) == true) {
+  if(luggageRecords.contains(id) == true) {
     message = "id-already-exists"
   } else {
     const timestamp: u64 = context.blockTimestamp;
     const luggage = new LuggageItem();
     luggage.checkIn(id, flightno, origin, destination)
-    luggageRecords.add(luggage);
+    luggageRecords.set(id, luggage);
     message = "ok"
   }
   return message;
 }
 
-
 /**
 *  Get the luggage item record, using the reference id of the passenger.
-*  We get the PersistentSet and return the array of records as a vector.
-*  We loop through each, checking to see if the record item matches our id.
-*
 */
-export function getLuggageItem(id: string): LuggageItem {
-  const items = luggageRecords.values();
-  var result: LuggageItem;
-  for(let i = 0; i < items.length; i++) {
-    if(items[i].id == id) {
-      result = items[i];
-    }
-  }
-  return result;
-}
-
-/**
-*  Check if the luggage 'id' exists.
-*/
-export function idExists(id: string): boolean {
-  const items = luggageRecords.values();
-  var result: boolean = false;
-  for(let i = 0; i < items.length; i++) {
-    if(items[i].id == id) {
-      result = true;
-    }
-  }
+export function getLuggageItem(id: string): LuggageItem | null {
+  let result = luggageRecords.get(id)
   return result;
 }
 
@@ -65,25 +41,18 @@ export function idExists(id: string): boolean {
 *  Remove/delete a luggageItem record from the PersistentSet.
 */
 export function removeLuggageItem(id: string): void {
-  const luggageItem = getLuggageItem(id);
-  luggageRecords.delete(luggageItem);
+  luggageRecords.delete(id);
 }
-
 
 /**
 *  Update the luggage to "en-route".  This signifies that the luggage has been
 *  loaded on the aircraft and is 'en-route' to its destination
-*
-*  This method updates the record in the PersistentSet by finding the correct record and
-*  assigning it to a variable.  Then delete the original.  Update the found record, then
-*  add it back to the PersistentSet
-*
+**
 */
 export function luggageEnRoute(id: string): void {
-  const luggageItem = getLuggageItem(id);
-  luggageRecords.delete(luggageItem);
-  luggageItem.enRoute()
-  luggageRecords.add(luggageItem);
+  let bag: LuggageItem = <LuggageItem>luggageRecords.get(id)
+  bag.enRoute()
+  luggageRecords.set(id, bag)
 }
 
 /**
@@ -94,12 +63,10 @@ export function luggageEnRoute(id: string): void {
 *
 */
 export function readyForCollection(id: string, collectionPoint: string): void {
-  const luggageItem = getLuggageItem(id);
-  luggageRecords.delete(luggageItem);
-  luggageItem.readyForCollection(collectionPoint)
-  luggageRecords.add(luggageItem);
+  let bag: LuggageItem = <LuggageItem>luggageRecords.get(id)
+  bag.readyForCollection(collectionPoint)
+  luggageRecords.set(id, bag)
 }
-
 
 
 /**
@@ -108,19 +75,10 @@ export function readyForCollection(id: string, collectionPoint: string): void {
 *  that was used to check in the luggage matches this account used to collect the luggage, then it will
 *  succeed.  Otherwise it will reject.
 */
-export function collectLuggage(id: string): string {
-  const luggageItem = getLuggageItem(id);
-  var isValidOwner = luggageItem.verifyPassenger(context.sender);
-  var message: string;
-  if(isValidOwner == true) {
-    luggageRecords.delete(luggageItem);
-    luggageItem.collectLuggage()
-    luggageRecords.add(luggageItem);
-    message = "collected"
-  } else {
-    message = "invalid-user"
-  }
-  return message;
+export function collectLuggage(id: string): void {
+  let bag: LuggageItem = <LuggageItem>luggageRecords.get(id)
+  bag.collectLuggage()
+  luggageRecords.set(id, bag)
 }
 
 
@@ -128,19 +86,15 @@ export function collectLuggage(id: string): string {
 *  Verify the .
 */
 export function verifyOwner(id: string): boolean {
-  const luggageItem = getLuggageItem(id);
-  var result = luggageItem.verifyPassenger(context.sender);
+  let result = false
+  let bag: LuggageItem = <LuggageItem>luggageRecords.get(id)
+  if(bag.verifyPassenger(context.sender) == true) {
+    result = true
+  }
   return result;
 }
 
 
-
-export function updateStatus(id: string, status: string): void {
-  const luggageItem = getLuggageItem(id);
-  luggageRecords.delete(luggageItem);
-  luggageItem.status = status
-  luggageRecords.add(luggageItem);
-}
 
 /**
 *  Return all records as an array
@@ -154,7 +108,7 @@ export function getAllLuggage(): LuggageItem[] {
 *  Returns a count of the total luggage items
 */
 export function totalBags(): i32 {
-  return luggageRecords.size;
+  return luggageRecords.length;
 }
 
 /**

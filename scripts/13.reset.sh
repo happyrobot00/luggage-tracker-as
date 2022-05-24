@@ -14,6 +14,6 @@ echo
 [ -z "$CONTRACT" ] && echo "Missing \$CONTRACT environment variable" && exit 1
 [ -z "$CONTRACT" ] || echo "Found it! \$CONTRACT is set to [ $CONTRACT ]"
 
-near call $CONTRACT clear '{}' --accountId=happyrobot.testnet
+near call $CONTRACT clear '{}' --accountId=happyrobot.testnet --gas 300000000000000
 
 exit 0

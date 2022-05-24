@@ -15,5 +15,6 @@ echo
 [ -z "$CONTRACT" ] || echo "Found it! \$CONTRACT is set to [ $CONTRACT ]"
 
 near view $CONTRACT getAllLuggage '{}' --accountId=happyrobot.testnet
+near view $CONTRACT getLuggageItem '{"id":"jules_bag"}' --accountId=happyrobot.testnet
 
 exit 0

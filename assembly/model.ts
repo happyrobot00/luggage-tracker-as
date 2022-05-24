@@ -1,4 +1,4 @@
-import { context, u128, base64, math, PersistentSet, PersistentVector } from "near-sdk-as";
+import { context, u128, base64, math, PersistentSet, PersistentVector, PersistentUnorderedMap } from "near-sdk-as";
 
 /**
  * Exporting a new class LuggageItem.
@@ -72,4 +72,4 @@ function generateRandomString(): string {
 /**
  * luggageRecords - uses a PersistentSet
  */
-export const luggageRecords = new PersistentSet<LuggageItem>("m");
+export const luggageRecords = new PersistentUnorderedMap<string, LuggageItem>("m");
