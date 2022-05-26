@@ -17,6 +17,33 @@ It also demonstrates a few other common functions, executed on the NEAR VM
 - Generating a random string (this function ended up not being used but kept as an example)
 
 
+## Usage
+
+### Check-in Luggage
+Check-in a luggage item.  This call requires a unique id (luggage tag etc), the flight number, the origin airport code, and destination airport code
+```
+near call dev-1652560975710-68441058074270 checkInLuggageItem '{"id":"my_bag_id", "flightno":"QF1234", "origin":"SYD", "destination":"JFK"}' --accountId=<your testnet account>
+```
+### View a luggage item by ID
+```
+near call dev-1652560975710-68441058074270 getLuggageItem '{"id":"my-bag-id"}' --accountId=<your testnet account>
+```
+Output
+```
+{
+  id: 'my-bag-id',
+  flightno: 'QF1234',
+  origin: 'SYD',
+  destination: 'JFK',
+  ownerAccountId: 'happyrobot.testnet',
+  checkInTime: '1653564925754225535',
+  checkOutTime: '0',
+  status: 'checked-in',
+  collectionPoint: null
+}
+
+```
+
 
 ## Challenges, Errors and Items of Interest
 
