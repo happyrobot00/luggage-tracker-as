@@ -44,6 +44,19 @@ Output
 
 ```
 
+### Updates
+```
+Update the luggage to 'en-route'
+near call dev-1652560975710-68441058074270 enRoute '{"id":"my-bag-id"}' --accountId=<your testnet account>
+
+Update the luggage to "ready" - signifying that the luggage can now be collected.  This call accepts the collectionPoint parameter eg "Carousel 9", "Gate 2" etc etc
+near call dev-1652560975710-68441058074270 readyForCollection '{"id":"my-bag-id", "collectionPoint":"Carousel 3"}' --accountId=<your testnet account>
+
+Called when passenger has collected their luggage.
+near call dev-1652560975710-68441058074270 collectLuggage '{"id":"my-bag-id"}' --accountId=<your testnet account>
+
+```
+
 
 ## Challenges, Errors and Items of Interest
 
