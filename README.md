@@ -66,11 +66,6 @@ I’ve added a few challenging errors I encountered, possibly helpful to those l
 ### Nullable Types
 When “getting” a PersistantUnoderedMap value, I was getting an error message.  
 In the example below, I wish to update the class LuggageItem.  It would return an error because luggageRecords.get(id) returns a “nullable” type.
-```
-ERROR TS2322: Type 'assembly/model/LuggageItem | null' is not assignable to type 'assembly/model/LuggageItem'.
-
-   let bag: LuggageItem = luggageRecords.get(id);
-```
 
 Original source:
 ```
@@ -80,6 +75,13 @@ export function luggageEnRoute(id: string): void {
   luggageRecords.set(id, bag)
 }
 ```
+The above would give the following error:
+```
+ERROR TS2322: Type 'assembly/model/LuggageItem | null' is not assignable to type 'assembly/model/LuggageItem'.
+
+   let bag: LuggageItem = luggageRecords.get(id);
+```
+
 
 The solution was to cast ‘LuggageItem’ as below: 
 ```
@@ -95,7 +97,7 @@ export function luggageEnRoute(id: string): void {
 ```
 
 ### Timestamps
-Unlike javascript (or any language) there is no Date.now() or equivilent.  This link provides a much better explanation - https://dev.to/melvinmanni/common-mistakes-you-might-make-using-the-near-sdk-as-and-assemblyscript-264c
+There is no Date.now() or equivilent.  This link provides a much better explanation on obtaining the timestamp using assemblyscript on Near VM - https://dev.to/melvinmanni/common-mistakes-you-might-make-using-the-near-sdk-as-and-assemblyscript-264c
 
 ```
 import { context } from "near-sdk-as";
