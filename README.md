@@ -26,7 +26,7 @@ near call dev-1652560975710-68441058074270 checkInLuggageItem '{"id":"my_bag_id"
 ```
 ### View a luggage item by ID
 ```
-near call dev-1652560975710-68441058074270 getLuggageItem '{"id":"my-bag-id"}' --accountId=<your testnet account>
+near view dev-1652560975710-68441058074270 getLuggageItem '{"id":"my-bag-id"}' --accountId=<your testnet account>
 ```
 Output
 ```
