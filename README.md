@@ -106,7 +106,7 @@ let timestampInNanoseconds = context.blockTimestamp;
 ```
 
 ### Generate a Random String
-I didn't end up using this.  The demo simulates scanning a unique luggage tag (which would either be supplied by the airline or the passenge, and would be a proper UUID.  
+I didn't end up using this, but an example of the code to generate a random string on Near VM is below.
 
 ```
 /*
