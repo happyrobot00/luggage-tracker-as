@@ -1,5 +1,5 @@
-# `luggage-tracker-as` Demonstration example for Learn Near Club certification
-# Luggage Tracker Demo Smart Contract
+# `luggage-tracker-as` 
+# Luggage Tracker Demo Smart Contract for LNC Certified Developer
 This smart contract for the NEAR protocol uses the hypothetical example of luggage tracking for an airline passenger. 
 
 - Passenger can check in their bag, using a unique luggage tag id, their origin and destination.
@@ -17,9 +17,11 @@ It also demonstrates a few other common functions, executed on the NEAR VM
 - Generating a random string (this function ended up not being used but kept as an example)
 
 
+
 ## Challenges, Errors and Items of Interest
 
 I’ve added a few challenging errors I encountered, possibly helpful to those learning assembly script on NEAR VM
+
 
 ### Nullable Types
 When “getting” a PersistantUnoderedMap value, I was getting an error message.  
